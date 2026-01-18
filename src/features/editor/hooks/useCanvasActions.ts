@@ -3,6 +3,8 @@ import { IText, FabricImage } from 'fabric';
 
 export const useCanvasActions = () => {
     const { canvas } = useEditor();
+    const MAX_CANVAS_SIZE = 1000;
+
 
     const addText = () => {
         if (!canvas) return;
@@ -45,10 +47,32 @@ export const useCanvasActions = () => {
         try {
             const img = await FabricImage.fromURL(url, { crossOrigin: 'anonymous' });
 
+            const { width = 600, height = 600 } = img;
+
+            // Calculate max dimensions based on viewport
+            const maxAllowedHeight = window.innerHeight * 0.8;
+            const maxAllowedWidth = MAX_CANVAS_SIZE;
+
+            let newWidth = width;
+            let newHeight = height;
+
+            // Calculate scale factor to fit within max dimensions while maintaining aspect ratio
+            const scaleX = maxAllowedWidth / width;
+            const scaleY = maxAllowedHeight / height;
+            const scale = Math.min(scaleX, scaleY, 1); // Use 1 to prevent upscaling small images, or remove if upscaling is desired. 
+            // Usually for "too big" issues, we only care about downscaling.
+
+            newWidth = width * scale;
+            newHeight = height * scale;
+
             canvas.setDimensions({
-                width: img.width || 600,
-                height: img.height || 600
+                width: newWidth,
+                height: newHeight
             });
+
+            // Scale image to match new canvas dimensions
+            img.scaleToWidth(newWidth);
+            img.scaleToHeight(newHeight);
 
             canvas.backgroundImage = img;
             canvas.centerObject(img);
