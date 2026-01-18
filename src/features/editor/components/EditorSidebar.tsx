@@ -41,16 +41,16 @@ export const EditorSidebar: React.FC = () => {
             <div className="p-4 border-t border-neutral-800 bg-neutral-900/50">
                 <div className="flex flex-col gap-2 text-xs text-neutral-500">
                     <a
-                        href="https://github.com/riteshshukla"
+                        href="https://github.com/riteshshukla04"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-2 hover:text-white transition-colors"
                     >
                         <Github size={14} />
-                        <span>@riteshshukla</span>
+                        <span>@riteshshukla04</span>
                     </a>
                     <a
-                        href="https://github.com/riteshshukla/memtro"
+                        href="https://github.com/riteshshukla04/memtro"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-2 hover:text-blue-400 transition-colors"
