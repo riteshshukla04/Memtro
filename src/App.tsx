@@ -6,7 +6,7 @@ function App() {
   return (
     <EditorProvider>
       <EditorLayout />
-      <MobileWarning />
+      {/* <MobileWarning /> */}
     </EditorProvider>
   )
 }
