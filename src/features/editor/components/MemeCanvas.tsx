@@ -7,26 +7,20 @@ const DEFAULT_CANVAS_SIZE = 600;
 export const MemeCanvas: React.FC = () => {
     const canvasEl = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-    const wrapperRef = useRef<HTMLDivElement>(null);
     const { canvas, setCanvas, setActiveObject } = useEditor();
     const [scale, setScale] = useState(1);
     const [canvasSize, setCanvasSize] = useState({ width: DEFAULT_CANVAS_SIZE, height: DEFAULT_CANVAS_SIZE });
 
-    // Calculate scale based on container size and actual canvas dimensions
+    // Mobile only: scale canvas to fit width
     useEffect(() => {
         const updateScale = () => {
-            if (!containerRef.current) return;
-            const containerWidth = containerRef.current.clientWidth;
-            const containerHeight = containerRef.current.clientHeight;
-            const padding = 32;
-            const availableWidth = containerWidth - padding;
-            const availableHeight = containerHeight - padding;
-            
-            // Scale based on both width and height to fit
-            const scaleX = availableWidth / canvasSize.width;
-            const scaleY = availableHeight / canvasSize.height;
-            const newScale = Math.min(1, scaleX, scaleY);
-            setScale(newScale);
+            const isMobile = window.innerWidth < 1024;
+            if (isMobile) {
+                const availableWidth = window.innerWidth - 32;
+                setScale(Math.min(1, availableWidth / canvasSize.width));
+            } else {
+                setScale(1); // No scaling on desktop
+            }
         };
 
         updateScale();
@@ -34,7 +28,7 @@ export const MemeCanvas: React.FC = () => {
         return () => window.removeEventListener('resize', updateScale);
     }, [canvasSize]);
 
-    // Watch for canvas dimension changes
+    // Watch for canvas dimension changes (for mobile scaling)
     useEffect(() => {
         if (!canvas) return;
 
@@ -49,7 +43,6 @@ export const MemeCanvas: React.FC = () => {
             });
         };
 
-        // Check on render events (after background is set)
         canvas.on('after:render', checkDimensions);
         
         return () => {
@@ -82,13 +75,19 @@ export const MemeCanvas: React.FC = () => {
         };
     }, [setCanvas, setActiveObject]);
 
+    const isMobile = window.innerWidth < 1024;
+
     return (
-        <div ref={containerRef} className="flex justify-center items-center bg-gray-100 p-4 h-full w-full overflow-hidden">
+        <div 
+            ref={containerRef} 
+            className="flex justify-center items-center bg-gray-100 p-4 w-full lg:h-full lg:overflow-auto"
+            style={{ minHeight: isMobile ? canvasSize.height * scale + 32 : undefined }}
+        >
             <div 
-                ref={wrapperRef}
-                className="shadow-xl bg-white origin-center"
+                className="shadow-xl bg-white"
                 style={{ 
-                    transform: `scale(${scale})`,
+                    transform: isMobile ? `scale(${scale})` : undefined,
+                    transformOrigin: 'top center',
                     width: canvasSize.width,
                     height: canvasSize.height,
                 }}

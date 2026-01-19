@@ -22,19 +22,21 @@ export const EditorToolbar: React.FC = () => {
     const FONTS = ['Impact', 'Arial', 'Times New Roman', 'Verdana', 'Courier New', 'Comic Sans MS'];
 
     return (
-        <div className="w-72 bg-neutral-900 border-l border-neutral-800 flex flex-col h-full z-10 shadow-xl">
+        <div className="basis-72 shrink bg-neutral-900 border-l border-neutral-800 flex flex-col h-full z-10 shadow-xl overflow-hidden">
             <div className="p-5 border-b border-neutral-800 flex justify-between items-center bg-neutral-900">
                 <div className="flex items-center gap-2">
                     <Settings2 size={18} className="text-neutral-400" />
                     <h3 className="font-semibold text-lg">Properties</h3>
                 </div>
-                <button
-                    onClick={deleteSelected}
-                    className="text-neutral-500 hover:text-red-400 p-2 hover:bg-neutral-800 rounded-lg transition-colors"
-                    title="Delete Selected"
-                >
-                    <Trash2 size={18} />
-                </button>
+                {!!activeObject && (
+                    <button
+                        onClick={deleteSelected}
+                        className="text-neutral-500 hover:text-red-400 p-2 hover:bg-neutral-800 rounded-lg transition-colors"
+                        title="Delete Selected"
+                    >
+                        <Trash2 size={18} />
+                    </button>
+                )}
             </div>
 
             <div className="flex-1 p-6 overflow-y-auto space-y-6">

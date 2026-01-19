@@ -10,27 +10,28 @@ export const EditorLayout: React.FC = () => {
     useKeyboardShortcuts();
 
     return (
-        <div className="flex flex-col lg:flex-row h-screen w-screen overflow-hidden bg-neutral-900 text-white font-sans">
-            {/* Desktop Sidebar - hidden on mobile */}
-            <div className="hidden lg:block">
+        <div className="flex flex-col lg:flex-row min-h-screen lg:h-screen w-screen lg:overflow-hidden overflow-y-auto bg-neutral-900 text-white font-sans">
+            {/* Desktop Sidebar */}
+            <div className="hidden lg:flex shrink">
                 <EditorSidebar />
             </div>
 
-            {/* Mobile Sidebar - visible only on mobile */}
+            {/* Mobile Sidebar */}
             <div className="lg:hidden">
                 <MobileSidebar />
             </div>
 
-            <main className="flex-1 flex flex-col relative bg-neutral-950">
+            {/* Canvas - shared between layouts */}
+            <main className="flex-1 shrink-0 flex flex-col relative bg-neutral-950">
                 <MemeCanvas />
             </main>
 
-            {/* Desktop Toolbar - hidden on mobile */}
-            <div className="hidden lg:block">
+            {/* Desktop Toolbar */}
+            <div className="hidden lg:flex shrink">
                 <EditorToolbar />
             </div>
 
-            {/* Mobile Toolbar - visible only on mobile */}
+            {/* Mobile Toolbar */}
             <div className="lg:hidden">
                 <MobileToolbar />
             </div>

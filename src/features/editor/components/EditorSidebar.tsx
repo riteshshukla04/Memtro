@@ -9,7 +9,7 @@ export const EditorSidebar: React.FC = () => {
     const { getRootProps, getInputProps, isDragActive } = useImageDrop();
 
     return (
-        <div className="w-80 bg-neutral-900 border-r border-neutral-800 flex flex-col h-full bg-opacity-95 backdrop-blur-sm z-10">
+        <div className="basis-80 shrink bg-neutral-900 border-r border-neutral-800 flex flex-col h-full bg-opacity-95 backdrop-blur-sm z-10 overflow-hidden">
             <div className="p-5 border-b border-neutral-800">
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">Memtro</h1>
             </div>
