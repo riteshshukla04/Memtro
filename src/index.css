@@ -11,6 +11,13 @@
   display: none;
 }
 
+/* Prevent iOS zoom on input focus (requires 16px minimum) */
+@media screen and (max-width: 1024px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

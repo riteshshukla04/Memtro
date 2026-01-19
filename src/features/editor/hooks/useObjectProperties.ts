@@ -51,12 +51,40 @@ export const useObjectProperties = () => {
         setTick(t => t + 1);
     };
 
+    // Helper to check if text style is active
+    const isStyleActive = (style: 'bold' | 'italic' | 'underline' | 'linethrough') => {
+        if (!activeObject || !isText) return false;
+        const text = activeObject as IText;
+        if (style === 'bold') return text.fontWeight === 'bold';
+        if (style === 'italic') return text.fontStyle === 'italic';
+        if (style === 'underline') return text.underline;
+        if (style === 'linethrough') return text.linethrough;
+        return false;
+    };
+
+    // Get text content
+    const getTextContent = (): string => {
+        if (!activeObject || !(activeObject instanceof IText)) return '';
+        return activeObject.text || '';
+    };
+
+    // Set text content
+    const setTextContent = (text: string) => {
+        if (!canvas || !activeObject || !(activeObject instanceof IText)) return;
+        activeObject.set('text', text);
+        canvas.renderAll();
+        setTick(t => t + 1);
+    };
+
     return {
         isText,
         activeObject,
         toggleStyle,
         setFontFamily,
         rotate,
-        setColor
+        setColor,
+        isStyleActive,
+        getTextContent,
+        setTextContent
     };
 };

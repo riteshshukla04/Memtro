@@ -2,24 +2,12 @@ import React from 'react';
 import { Download, Trash2, Settings2, Bold, Italic, Underline, Strikethrough, RotateCw, Type, Palette } from 'lucide-react';
 import { useCanvasActions } from '../hooks/useCanvasActions';
 import { useObjectProperties } from '../hooks/useObjectProperties';
+import { FONTS } from '../constants';
 import { IText } from 'fabric';
 
 export const EditorToolbar: React.FC = () => {
     const { download, deleteSelected, moveUp, moveDown } = useCanvasActions();
-    const { isText, activeObject, toggleStyle, setFontFamily, rotate, setColor } = useObjectProperties();
-
-    // Helper to check if style is active
-    const isActive = (style: string) => {
-        if (!activeObject || !isText) return false;
-        const text = activeObject as IText;
-        if (style === 'bold') return text.fontWeight === 'bold';
-        if (style === 'italic') return text.fontStyle === 'italic';
-        if (style === 'underline') return text.underline;
-        if (style === 'linethrough') return text.linethrough;
-        return false;
-    }
-
-    const FONTS = ['Impact', 'Arial', 'Times New Roman', 'Verdana', 'Courier New', 'Comic Sans MS'];
+    const { isText, activeObject, toggleStyle, setFontFamily, rotate, setColor, isStyleActive } = useObjectProperties();
 
     return (
         <div className="basis-72 shrink bg-neutral-900 border-l border-neutral-800 flex flex-col h-full z-10 shadow-xl overflow-hidden">
@@ -54,28 +42,28 @@ export const EditorToolbar: React.FC = () => {
                                     <div className="grid grid-cols-4 gap-1 bg-neutral-800 p-1 rounded-lg border border-neutral-700">
                                         <button
                                             onClick={() => toggleStyle('fontWeight')}
-                                            className={`p-2 rounded hover:bg-neutral-700 flex justify-center ${isActive('bold') ? 'bg-neutral-600 text-white' : 'text-neutral-400'}`}
+                                            className={`p-2 rounded hover:bg-neutral-700 flex justify-center ${isStyleActive('bold') ? 'bg-neutral-600 text-white' : 'text-neutral-400'}`}
                                             title="Bold"
                                         >
                                             <Bold size={18} />
                                         </button>
                                         <button
                                             onClick={() => toggleStyle('fontStyle')}
-                                            className={`p-2 rounded hover:bg-neutral-700 flex justify-center ${isActive('italic') ? 'bg-neutral-600 text-white' : 'text-neutral-400'}`}
+                                            className={`p-2 rounded hover:bg-neutral-700 flex justify-center ${isStyleActive('italic') ? 'bg-neutral-600 text-white' : 'text-neutral-400'}`}
                                             title="Italic"
                                         >
                                             <Italic size={18} />
                                         </button>
                                         <button
                                             onClick={() => toggleStyle('underline')}
-                                            className={`p-2 rounded hover:bg-neutral-700 flex justify-center ${isActive('underline') ? 'bg-neutral-600 text-white' : 'text-neutral-400'}`}
+                                            className={`p-2 rounded hover:bg-neutral-700 flex justify-center ${isStyleActive('underline') ? 'bg-neutral-600 text-white' : 'text-neutral-400'}`}
                                             title="Underline"
                                         >
                                             <Underline size={18} />
                                         </button>
                                         <button
                                             onClick={() => toggleStyle('linethrough')}
-                                            className={`p-2 rounded hover:bg-neutral-700 flex justify-center ${isActive('linethrough') ? 'bg-neutral-600 text-white' : 'text-neutral-400'}`}
+                                            className={`p-2 rounded hover:bg-neutral-700 flex justify-center ${isStyleActive('linethrough') ? 'bg-neutral-600 text-white' : 'text-neutral-400'}`}
                                             title="Strikethrough"
                                         >
                                             <Strikethrough size={18} />

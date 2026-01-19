@@ -6,3 +6,12 @@ export const TEMPLATES = [
     'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzB4z2H5zFreMb11uwjLKyyWH4Vs5UKQYpOw&s', // Old Man yells
 ];
 
+export const FONTS = [
+    'Impact',
+    'Arial', 
+    'Times New Roman',
+    'Verdana',
+    'Courier New',
+    'Comic Sans MS'
+];
+

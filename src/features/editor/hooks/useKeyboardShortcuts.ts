@@ -7,6 +7,10 @@ export const useKeyboardShortcuts = () => {
     useEffect(() => {
         if (!canvas) return;
 
+        // Disable keyboard shortcuts on mobile
+        const isMobile = window.innerWidth < 1024;
+        if (isMobile) return;
+
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Delete' || e.key === 'Backspace') {
                 // Prevent backspace from navigating back if not in an input
