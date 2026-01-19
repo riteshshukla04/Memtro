@@ -72,7 +72,7 @@ export const MobileSidebar: React.FC = () => {
                                 <button
                                     key={idx}
                                     onClick={() => addBackgroundFromUrl(url)}
-                                    className="flex-shrink-0 w-[14vw] aspect-square border border-neutral-700 rounded-lg overflow-hidden hover:ring-2 ring-blue-500 transition-all"
+                                    className="flex-shrink-0 w-[25vw] md:w-[14vw] aspect-square border border-neutral-700 rounded-lg overflow-hidden hover:ring-2 ring-blue-500 transition-all"
                                 >
                                     <img src={url} alt={`Template ${idx}`} loading="lazy" className="w-full h-full object-cover" />
                                 </button>
