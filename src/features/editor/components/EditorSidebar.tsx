@@ -1,11 +1,12 @@
 import React from 'react';
-import { Type, Github } from 'lucide-react';
+import { Type, Github, Upload } from 'lucide-react';
 import { useCanvasActions } from '../hooks/useCanvasActions';
-import { TemplateSelector } from './TemplateSelector';
-import { ImageUpload } from './ImageUpload';
+import { useImageDrop } from '../hooks/useImageDrop';
+import { TEMPLATES } from '../constants';
 
 export const EditorSidebar: React.FC = () => {
-    const { addText } = useCanvasActions();
+    const { addText, addBackgroundFromUrl } = useCanvasActions();
+    const { getRootProps, getInputProps, isDragActive } = useImageDrop();
 
     return (
         <div className="w-80 bg-neutral-900 border-r border-neutral-800 flex flex-col h-full bg-opacity-95 backdrop-blur-sm z-10">
@@ -29,12 +30,34 @@ export const EditorSidebar: React.FC = () => {
 
                 <section>
                     <h3 className="text-xs font-bold text-neutral-500 uppercase tracking-wider mb-3">Uploads</h3>
-                    <ImageUpload />
+                    <div
+                        {...getRootProps()}
+                        className={`
+                            border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors
+                            ${isDragActive ? 'border-blue-500 bg-blue-500/10' : 'border-neutral-600 hover:border-neutral-500'}
+                        `}
+                    >
+                        <input {...getInputProps()} />
+                        <Upload className="mx-auto h-8 w-8 text-neutral-400 mb-2" />
+                        <p className="text-sm text-neutral-400">
+                            {isDragActive ? 'Drop image here' : 'Upload or Drag Image'}
+                        </p>
+                    </div>
                 </section>
 
                 <section>
                     <h3 className="text-xs font-bold text-neutral-500 uppercase tracking-wider mb-3">Templates</h3>
-                    <TemplateSelector />
+                    <div className="grid grid-cols-2 gap-2">
+                        {TEMPLATES.map((url, idx) => (
+                            <button
+                                key={idx}
+                                onClick={() => addBackgroundFromUrl(url)}
+                                className="border border-neutral-700 rounded overflow-hidden hover:ring-2 ring-blue-500 transition-all"
+                            >
+                                <img src={url} alt={`Template ${idx}`} loading="lazy" className="w-full h-auto object-cover" />
+                            </button>
+                        ))}
+                    </div>
                 </section>
             </div>
 
