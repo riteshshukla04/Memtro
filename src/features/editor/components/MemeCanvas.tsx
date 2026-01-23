@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Canvas } from 'fabric';
 import { useEditor } from '../context/EditorContext';
+import { useClipboardPaste } from '../hooks/useClipboardPaste';
 
 const DEFAULT_CANVAS_SIZE = 600;
 
@@ -10,6 +11,9 @@ export const MemeCanvas: React.FC = () => {
     const { canvas, setCanvas, setActiveObject } = useEditor();
     const [scale, setScale] = useState(1);
     const [canvasSize, setCanvasSize] = useState({ width: DEFAULT_CANVAS_SIZE, height: DEFAULT_CANVAS_SIZE });
+
+    // Enable clipboard paste functionality (desktop only, inside canvas)
+    useClipboardPaste(containerRef);
 
     // Mobile only: scale canvas to fit width
     useEffect(() => {
@@ -80,7 +84,7 @@ export const MemeCanvas: React.FC = () => {
     return (
         <div 
             ref={containerRef} 
-            className="flex justify-center items-center bg-gray-100 p-4 w-full lg:h-full lg:overflow-auto"
+            className="flex justify-center items-center bg-gray-100 p-4 w-full lg:h-full lg:overflow-auto focus:outline-none"
             style={{ minHeight: isMobile ? canvasSize.height * scale + 32 : undefined }}
         >
             <div 

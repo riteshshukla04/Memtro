@@ -6,7 +6,7 @@ import { TEMPLATES } from '../constants';
 
 export const MobileSidebar: React.FC = () => {
     const { addText, addBackgroundFromUrl } = useCanvasActions();
-    const { getRootProps, getInputProps, isDragActive } = useImageDrop();
+    const { dropzoneBackground, dropzoneImage } = useImageDrop();
 
     return (
         <div className="w-full py-3 px-4 bg-neutral-900 border-b border-neutral-800">
@@ -57,7 +57,17 @@ export const MobileSidebar: React.FC = () => {
                 </div>
 
                 {/* Add Text + Upload row */}
-                <div className="flex gap-3">
+                <div className="grid grid-cols-3 gap-3">
+                    <div {...dropzoneBackground.getRootProps()} className={`flex-1 flex flex-col items-center justify-center gap-1 py-4 px-2 border-2 border-dashed rounded-xl transition-colors cursor-pointer group ${dropzoneBackground.isDragActive ? 'border-blue-500 bg-blue-500/10' : 'border-neutral-600 hover:border-neutral-500'}`}>
+                        <input key="dropzoneBackground" {...dropzoneBackground.getInputProps()} />
+                        <Upload className="w-5 h-5 text-neutral-400 group-hover:text-blue-400" />
+                        <span className="text-xs text-center font-medium text-neutral-400 group-hover:text-white">Upload Background</span>
+                    </div>
+                    <div {...dropzoneImage.getRootProps()} className={`flex-1 flex flex-col items-center justify-center gap-1 py-4 px-2 border-2 border-dashed rounded-xl transition-colors cursor-pointer group ${dropzoneImage.isDragActive ? 'border-blue-500 bg-blue-500/10' : 'border-neutral-600 hover:border-neutral-500'}`}>
+                        <input key="dropzoneImage" {...dropzoneImage.getInputProps()} />
+                        <Upload className="w-5 h-5 text-neutral-400 group-hover:text-blue-400" />
+                        <span className="text-xs text-center font-medium text-neutral-400 group-hover:text-white">Upload Image</span>
+                    </div>
                     <button
                         onClick={addText}
                         className="flex-1 flex flex-col items-center justify-center gap-1 py-4 bg-neutral-800 hover:bg-neutral-700 rounded-xl transition-all border border-neutral-700 hover:border-blue-500/50 group hover:-translate-y-0.5"
@@ -65,11 +75,6 @@ export const MobileSidebar: React.FC = () => {
                         <Type className="w-5 h-5 text-neutral-400 group-hover:text-blue-400" />
                         <span className="text-xs font-medium text-neutral-300 group-hover:text-white">Add Text</span>
                     </button>
-                    <div {...getRootProps()} className={`flex-1 flex flex-col items-center justify-center gap-1 py-4 border-2 border-dashed rounded-xl transition-colors cursor-pointer group ${isDragActive ? 'border-blue-500 bg-blue-500/10' : 'border-neutral-600 hover:border-neutral-500'}`}>
-                        <input {...getInputProps()} />
-                        <Upload className="w-5 h-5 text-neutral-400 group-hover:text-blue-400" />
-                        <span className="text-xs font-medium text-neutral-400 group-hover:text-white">Upload</span>
-                    </div>
                 </div>
             </div>
         </div>

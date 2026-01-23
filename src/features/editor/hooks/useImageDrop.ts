@@ -1,30 +1,53 @@
-import { useCallback } from 'react';
-import { useDropzone } from 'react-dropzone';
-import { useCanvasActions } from './useCanvasActions';
-import { useEditor } from '../context/EditorContext';
+import { useCallback } from "react";
+import { useDropzone } from "react-dropzone";
+import { useCanvasActions } from "./useCanvasActions";
 
 export const useImageDrop = () => {
-    const { addImageFromUrl, addBackgroundFromUrl } = useCanvasActions();
-    const { canvas } = useEditor();
+  const { addImageFromUrl, addBackgroundFromUrl } = useCanvasActions();
 
-    const onDrop = useCallback((acceptedFiles: File[]) => {
-        acceptedFiles.forEach(file => {
-            const reader = new FileReader();
-            reader.onload = () => {
-                const result = reader.result as string;
-                // If canvas has no background image, assume this is the main template background
-                if (canvas && !canvas.backgroundImage) {
-                    addBackgroundFromUrl(result);
-                } else {
-                    addImageFromUrl(result);
-                }
-            };
-            reader.readAsDataURL(file);
-        });
-    }, [addImageFromUrl, addBackgroundFromUrl, canvas]);
+  const onDropBackground = useCallback(
+    (acceptedFiles: File[]) => {
+      acceptedFiles.forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = reader.result as string;
+          // If canvas has no background image, assume this is the main template background
+          addBackgroundFromUrl(result);
+        };
+        reader.readAsDataURL(file);
+      });
+    },
+    [addBackgroundFromUrl],
+  );
 
-    const dropzone = useDropzone({ onDrop, accept: { 'image/*': [] }, multiple: false });
+  const onDropImage = useCallback(
+    (acceptedFiles: File[]) => {
+      acceptedFiles.forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = reader.result as string;
+          // If canvas has no background image, assume this is the main template background
+          addImageFromUrl(result);
+        };
+        reader.readAsDataURL(file);
+      });
+    },
+    [addImageFromUrl],
+  );
 
-    return dropzone;
+  const dropzoneBackground = useDropzone({
+    onDrop: onDropBackground,
+    accept: { "image/*": [] },
+    multiple: false,
+  });
+  const dropzoneImage = useDropzone({
+    onDrop: onDropImage,
+    accept: { "image/*": [] },
+    multiple: false,
+  });
+
+  return {
+    dropzoneBackground,
+    dropzoneImage,
+  };
 };
-

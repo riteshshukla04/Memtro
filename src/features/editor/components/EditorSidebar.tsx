@@ -6,7 +6,7 @@ import { TEMPLATES } from '../constants';
 
 export const EditorSidebar: React.FC = () => {
     const { addText, addBackgroundFromUrl } = useCanvasActions();
-    const { getRootProps, getInputProps, isDragActive } = useImageDrop();
+    const { dropzoneBackground, dropzoneImage } = useImageDrop();
 
     return (
         <div className="basis-80 shrink bg-neutral-900 border-r border-neutral-800 flex flex-col h-full bg-opacity-95 backdrop-blur-sm z-10 overflow-hidden">
@@ -25,22 +25,35 @@ export const EditorSidebar: React.FC = () => {
                             <Type className="w-6 h-6 mb-2 text-neutral-400 group-hover:text-blue-400 object-contain" />
                             <span className="text-sm font-medium text-neutral-300 group-hover:text-white">Add Text</span>
                         </button>
+                        <div
+                            {...dropzoneImage.getRootProps()}
+                            className={`
+                                border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors
+                                ${dropzoneImage.isDragActive ? 'border-blue-500 bg-blue-500/10' : 'border-neutral-600 hover:border-neutral-500'}
+                            `}
+                        >
+                            <input key="dropzoneImage" {...dropzoneImage.getInputProps()} />
+                            <Upload className="mx-auto h-8 w-8 text-neutral-400 mb-2" />
+                            <p className="text-sm text-neutral-400">
+                                {dropzoneBackground.isDragActive ? 'Drop image here' : 'Upload or Drag Image'}
+                            </p>
+                        </div>
                     </div>
                 </section>
 
                 <section>
-                    <h3 className="text-xs font-bold text-neutral-500 uppercase tracking-wider mb-3">Uploads</h3>
+                    <h3 className="text-xs font-bold text-neutral-500 uppercase tracking-wider mb-3">Background</h3>
                     <div
-                        {...getRootProps()}
+                        {...dropzoneBackground.getRootProps()}
                         className={`
                             border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors
-                            ${isDragActive ? 'border-blue-500 bg-blue-500/10' : 'border-neutral-600 hover:border-neutral-500'}
+                            ${dropzoneBackground.isDragActive ? 'border-blue-500 bg-blue-500/10' : 'border-neutral-600 hover:border-neutral-500'}
                         `}
                     >
-                        <input {...getInputProps()} />
+                        <input key="dropzoneBackground" {...dropzoneBackground.getInputProps()} />
                         <Upload className="mx-auto h-8 w-8 text-neutral-400 mb-2" />
                         <p className="text-sm text-neutral-400">
-                            {isDragActive ? 'Drop image here' : 'Upload or Drag Image'}
+                            {dropzoneBackground.isDragActive ? 'Drop Background here' : 'Upload or Drag Background'}
                         </p>
                     </div>
                 </section>
